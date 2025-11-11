@@ -1,0 +1,41 @@
+[Unit]
+Description=Team Urlaubsplaner - Vacation Management System
+Documentation=https://github.com/CychoGit/TeamUrlaubplaner
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=urlaubsplaner
+Group=urlaubsplaner
+WorkingDirectory=/opt/urlaubsplaner/app
+
+# Umgebungsvariablen
+Environment="NODE_ENV=production"
+EnvironmentFile=/opt/urlaubsplaner/app/.env
+
+# Start-Kommando
+ExecStart=/usr/bin/npm start
+
+# Restart-Strategie
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=urlaubsplaner
+
+# Sicherheits-Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/urlaubsplaner/app
+
+# Resource Limits
+LimitNOFILE=65536
+LimitNPROC=4096
+MemoryLimit=2G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target
